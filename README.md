@@ -12,7 +12,7 @@ static => CSS & JS files
 
 static/images => profile avatars
 
-jsonmodule.py => module to deal with json storage of users list in case you dont want to use mongoDB
+jsonmodule.py => module to deal with json storage of users list (***in case you dont want to use mongoDB***)
 
 jsonreset.py => script to reset json userlist database(used by jsonmodule.py)
 
