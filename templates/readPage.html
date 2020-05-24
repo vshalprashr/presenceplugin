@@ -106,7 +106,7 @@
   </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 	  <script type="text/javascript">
-	  	const socket = io.connect('http://presenceplugin.herokuapp.com/');
+	  	const socket = io.connect('http://localhost:5000/');
 	  	// const socket = io.connect("http://presenceplugin.herokuapp.com/");
 	  	socket.on('connect', function () {
 	  		socket.emit('join_reading', {
