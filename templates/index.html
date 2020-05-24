@@ -1,1 +1,92 @@
+<!doctype html>
+<html lang="en" >
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+    <style type="text/css">
+    	html{
+    		height: 100%;
+    	}
+    	body{
+    		background-image: linear-gradient(to bottom left, silver, dimgrey);
+    		height: 100%;
+    		background-attachment: fixed;
+    		background-repeat: no-repeat;
+    		align-items: center;
+			font-family: 'Abel', sans-serif;
+    		align-content: center;
+    		text-align: center;
+    		vertical-align: middle;
+    	}
+    	.loginpage{
+    		overflow: auto;
+    		position: absolute;
+    		left: 35vw;
+			width: 30vw;
+			background-color: white;
+			border-radius: 20px;
+			z-index: 5;
+			box-shadow: 1px 1px 10px black;
+			padding: 20px;
+			opacity: 80%;
+			font-size: x-large;
+    	}
+    	.input-field{
+    		margin: 10px;
+    		border-radius: 5px;
+    		border: 2px solid grey;
+    	}
+    	.btn-submit{
+    		padding: 5px;
+    		margin: 10px;
+    		border-radius: 10px;
+    	}
+    </style>
 
+    
+    <title>Presence App</title>
+  </head>
+  <body>
+  		{{ message }}
+		{{ params }}
+		<h1>HOME</h1>
+		<div class="loginpage" style="width: 30vw; background-color: white; border-radius: 20px; z-index: 5;
+		box-shadow: black 5px; padding: 20px;">
+			<div class="form">
+			<form action="/login" method="post">
+				<label> Log In </label>
+				<div class="row">
+					<div class="col">
+						<input type="hidden" name="formtype" value="login">
+						<input type="text" class="input-field" placeholder="Username" name="userid" required>
+						<input type="password" class="input-field" placeholder="Password" name="pass" required>
+						<button type="submit" class="btn-submit" id="loginSubmit">LOG IN</button>
+					</div>
+				</div>
+			</form>
+			</div>
+			<div class="form">
+			<form action="/register" method="post" enctype="multipart/form-data">
+				<label> Sign Up </label>
+				<div class="row">
+					<div class="col">
+						<input type="hidden" name="formtype" value="signup">
+						<input type="file" class="btn-submit input-field" name="file" accept="image/png, image/jpeg, image/jpg" required>
+						<input type="text" class="input-field" placeholder="Username" name="userid" required>
+						<input type="password" class="input-field" placeholder="Password" name="pass"  required>
+<!-- 						pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+ -->						<button type="submit" class="btn-submit" id="signupSubmit">SIGN UP</button>
+					</div>
+				</div>
+			</form>
+			</div>
+		</div>
+
+  </body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+  <script type="text/javascript">
+  </script>
+</html>

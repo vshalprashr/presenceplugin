@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" >
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+    <script src="static/run.js"></script>
+    <style type="text/css">
+    	html{
+    		height: 100%;
+    	}
+    	body{
+    		background-image: linear-gradient(to bottom left, silver, dimgrey);
+    		height: 100%;
+    		background-attachment: fixed;
+    		background-repeat: no-repeat;
+    		align-items: center;
+			font-family: 'Abel', sans-serif;
+    		align-content: center;
+    		text-align: center;
+    		vertical-align: middle;
+    	}
+    	.readerImage{
+    		width: 60px;
+    		height: 60px;
+    		border-radius: 25px;
+    		border: 1px solid dimgrey;
+    	}
+    	.result{
+    		vertical-align: middle;
+    		margin-top: 25vh;
+    		text-align: center;
+    		align-items: center;
+    	}
+    	.btn-submit{
+    		padding: 5px;
+    		margin: 10px;
+    		border-radius: 10px;
+    	}
+    	.readerList{
+		    display: -webkit-inline-box;
+    	}
+    	.tooltip {
+		  position: relative;
+		  display: inline-block;
+		}
+
+		.tooltip .tooltiptext {
+		  visibility: hidden;
+		  width: 120px;
+		  background-color: #555;
+		  color: #fff;
+		  text-align: center;
+		  border-radius: 6px;
+		  padding: 5px 0;
+		  position: absolute;
+		  z-index: 1;
+		  bottom: 125%;
+		  left: 50%;
+		  margin-left: -60px;
+		  opacity: 0;
+		  transition: opacity 0.3s;
+		}
+
+		.tooltip .tooltiptext::after {
+		  content: "";
+		  position: absolute;
+		  top: 100%;
+		  left: 50%;
+		  margin-left: -5px;
+		  border-width: 5px;
+		  border-style: solid;
+		  border-color: #555 transparent transparent transparent;
+		}
+
+		.tooltip:hover .tooltiptext {
+		  visibility: visible;
+		  opacity: 1;
+		}
+    </style>
+
+    
+    <title>Presence App</title>
+  </head>
+  <body>
+  	{{ message }}
+
+		<h1>PRESENTLY READING USERS</h1>
+
+		{% if current_user.is_authenticated %}
+			<div class="result" style="align-items: center; vertical-align: middle; display: inline-flex;">
+<!-- 				Current user details and logout option  -->
+				<img class="tooltip" src=" static/images/{{  current_user.avatar }} " style="width: 40px; height: 40px;border-radius: 25px;" >
+				
+				<button class="btn-submit" onclick="window.location.href = '/logout';"><strong>{{ current_user.userid }}</strong> : Logout</button>
+				<!-- READER LIST FOR LOGGED IN USERS -->
+				<div class="readerList" id="readerList"></div>
+			</div>
+		{% else %}
+			Please login!
+		{% endif %}
+		
+
+  </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+	  <script type="text/javascript">
+	  	const socket = io.connect('http://presenceplugin.herokuapp.com/');
+	  	// const socket = io.connect("http://presenceplugin.herokuapp.com/");
+	  	socket.on('connect', function () {
+	  		socket.emit('join_reading', {
+	  				userid: "{{ current_user.userid }}"
+	  		})
+	  	});
+
+	  	socket.on(['connect_timeout','disconnect'], function () {
+	  		socket.emit('leave_reading', {
+	  				userid: "{{ current_user.userid }}"
+	  		})
+	  	})
+
+	  	socket.on('join_reading_announcement', function (data_res) {
+	  		console.log(data_res);
+	  		var x;
+
+	  		var e = document.getElementById('readerList');
+	        var child = e.lastElementChild;
+	        while (child) {
+	            e.removeChild(child);
+	            child = e.lastElementChild;
+	  		}
+	  		var x;
+	  		for (x=0 ; x<data_res['resultCursor'].length ; x++) {
+	  			const newReader = document.createElement('div');
+	  			newReader.setAttribute('class', 'tooltip');
+	  			console.log(data_res['resultCursor'][x]);
+		  		newReader.innerHTML = `<img src="static/images/${data_res['resultCursor'][x]['avatar']}" id="${data_res['resultCursor'][x]['user']}" class="readerImage"><span class="tooltiptext"><strong>${data_res['resultCursor'][x]['userid']}</strong><br>Last Login: ${data_res['resultCursor'][x]['lastlogin']}</span>`;
+		  		document.getElementById('readerList').appendChild(newReader);
+	  		}
+	  		
+	  	})
+	  	socket.on('leave_reading_announcement', function (userid) {
+	  		console.log("Left ");
+	  		console.log(userid);
+	  		var image_x = document.getElementById(userid['userid']);
+			image_x.parentNode.removeChild(image_x);
+	  	})
+
+	  </script>
+</html>
