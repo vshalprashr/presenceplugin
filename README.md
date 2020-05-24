@@ -18,14 +18,13 @@ jsonreset.py => script to reset json userlist database(used by jsonmodule.py)
 
 requirements.txt => dependency list
 
-**
+**************************************************************************************
 
-Put your server address in line 108 of templates/readPage.html
-as mentioned below:
+### Put your server address in line **108** of **templates/readPage.html** as mentioned below:
 
-const socket = io.connect('\<server-address\>');
+const socket = io.connect('***\<server-address\>***');
 
-For localhost
+##### For localhost
 const socket = io.connect('http://localhost:5000');
 
-**
+***************************************************************************************
