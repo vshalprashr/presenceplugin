@@ -124,4 +124,4 @@ def join_reading_handler(userdata):
 	socketio.emit('join_reading_announcement', {"resultCursor":result})
 
 if __name__ == '__main__':
-	socketio.run(app, debug=True)
+	socketio.run(app)
